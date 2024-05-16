@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo">$ToastCat</div>
+        <!-- New div for buttons -->
+        <div class="nav-items">
+            <a href="https://www.youtube.com/watch?v=NGxLz9IuT88&list=PLRcHkhbMNTBhxC935KTZysN0Malhd8k--&index=10">
+                <button class="button" style="background-image: url('assets/tg.webp')"></button>
+            </a>
+            <a href="https://www.youtube.com/">
+                <button class="button" style="background-image: url('assets/x.webp')"></button>
+            </a>
+            <a href="https://chatgpt.com/">
+                <button class="button" style="background-image: url('assets/dex.webp')"></button>
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="main-header">
+            <h1>TOASTCAT LIVE NOW</h1>
+        </div>
+        <div class="hero-container">
+            <div class="dont-text"><h1>DON'T CLICK $TOASTCAT!!</h1></div>
+
+            <div class="local-count">
+                <h2 id="local-count-header">0</h2>
+            </div>
+
+            <div class="global-count">
+                <h3>WORLDWIDE CLICKS:</h3>
+                <h2 id="global-count-header">0</h2>
+            </div>
+            
+            <button class="cat-button">
+                <img 
+                    src="./assets/cat1.png"
+                    alt="toast cat"
+                    class="cat1-image"
+                    id="cat-image"
+                />
+            </button>
+        </div>
+    </section>
+</body>
+</html>
