@@ -6,15 +6,15 @@ const fs = require('fs');
 
 const app = express();
 
-// Serve static files from the 'frontend' directory
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, '/public')));
 
 // Serve static files from the 'assets' directory
-app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
+app.use('/assets', express.static(path.join(__dirname, './public/assets')));
 
 // Route for serving the index.html file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 const server = http.createServer(app);
