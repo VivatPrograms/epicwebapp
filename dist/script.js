@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let isPlaying = false;
 
-    const SERVER_URL = 'https://toast-cat.netlify.app/';
-    const socket = io(SERVER_URL);
+    const socket = io();
 
     function changeCatImage() {
         catImage.src = "./assets/cat2.png";

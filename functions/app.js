@@ -5,7 +5,6 @@ const socketIO = require('socket.io');
 const { MongoClient } = require('mongodb');
 
 const app = express();
-app.use(cors());
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, '../dist')));
@@ -19,15 +18,7 @@ app.get('/', (req, res) => {
 });
 
 const server = http.createServer(app);
-
-const io = require('socket.io')(server, {
-    cors: {
-      origin: "https://toast-cat.netlify.app/",
-      methods: ["GET", "POST"],
-      allowedHeaders: ["my-custom-header"],
-      credentials: true
-    }
-  });
+const io = socketIO(server,{ cors : "*" });
 
 const uri = "mongodb+srv://Vivat:Mantronas3000.@toast-cat.ye9h9zt.mongodb.net/?retryWrites=true&w=majority&appName=toast-cat";
 const client = new MongoClient(uri);
