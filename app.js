@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 const server = http.createServer(app);
-const io = socketIO(server,{ cors : "*" });
+const io = socketIO(server, { cors: "*" });
 
 const uri = "mongodb+srv://Vivat:Mantronas3000.@toast-cat.ye9h9zt.mongodb.net/toast-cat-db?retryWrites=true&w=majority&appName=toast-cat";
 const client = new MongoClient(uri);
@@ -63,6 +63,11 @@ io.on('connection', (socket) => {
 
     socket.on('update-global-count', () => {
         // Update global count in the database
+        if (!collection) {
+            console.error("Collection is not defined.");
+            return;
+        }
+
         globalCount++;
 
         // Update the global count in MongoDB Atlas
