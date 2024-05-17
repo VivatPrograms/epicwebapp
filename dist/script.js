@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let isPlaying = false;
 
+    const socket = io(); // Initialize the socket connection here
+
     function changeCatImage() {
         catImage.src = "./assets/cat2.png";
     }
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 isPlaying = false;
             });
         } else {
-            meowSound.currentTime = 0; // Reset the playback to the beginning
+            meowSound.currentTime = 0;
         }
     }
 
@@ -32,19 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
         currentNumber += 1;
         localClicksNumber.textContent = currentNumber;
 
-        // Send the updated local count to the server via Socket.IO
         socket.emit('update-global-count', currentNumber);
-    }
-
-    function fetchJSONData() {
-        fetch('../backend/globalCount.json')
-            .then((response) => response.json())
-            .then((json) => console.log(json));
     }
 
     catButton.addEventListener('mousedown', () => {
         changeCatImage();
-        playMeowSound(); // Play the meow sound when mouse is released
+        playMeowSound(); 
         incrementLocalCount();
     });
 
@@ -56,17 +51,8 @@ document.addEventListener("DOMContentLoaded", function() {
         restoreCatImage();
     });
 
-    // Establish Socket.IO connection with the server
-    const socket = io();
-    
-    // Handle message from the server
     socket.on('global-count-updated', (data) => {
-        // Update the global count displayed on the client
         globalClicksNumber.textContent = data;
         console.log('UPDATING RN ',data)
     });
-
-    // fetchJSONData()
 });
-
-//FIX THE GLOBAL COUNT NOT SHOWING AT START!
