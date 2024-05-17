@@ -1,3 +1,7 @@
+// Add this line in your script.js to check if Socket.IO is defined
+console.log("Socket.IO:", typeof io);
+
+// Rest of your script
 document.addEventListener("DOMContentLoaded", function() {
     const catButton = document.querySelector('.cat-button');
     const catImage = document.getElementById('cat-image');
