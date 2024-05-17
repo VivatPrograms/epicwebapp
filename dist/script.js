@@ -11,8 +11,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let isPlaying = false;
 
-    const socket = io(); // Initialize the socket connection here
-
     function changeCatImage() {
         catImage.src = "./assets/cat2.png";
     }
@@ -54,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
     catButton.addEventListener('mouseleave', () => {
         restoreCatImage();
     });
-
+    
     socket.on('global-count-updated', (data) => {
         globalClicksNumber.textContent = data;
         console.log('UPDATING RN ',data)
