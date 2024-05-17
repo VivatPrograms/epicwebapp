@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const socketIO = require('socket.io');
-const fs = require('fs');
+const { MongoClient } = require('mongodb');
 
 const app = express();
 
@@ -20,45 +20,62 @@ app.get('/', (req, res) => {
 const server = http.createServer(app);
 const io = socketIO(server);
 
+const uri = "mongodb+srv://Vivat:Mantronas3000.@toast-cat.ye9h9zt.mongodb.net/?retryWrites=true&w=majority&appName=toast-cat";
+const client = new MongoClient(uri);
+
 let globalCount = 0;
+let collection; // Define collection globally
 
-fs.readFile(path.join(__dirname, 'globalCount.json'), 'utf8', (err, data) => {
-    if (err) {
-        console.error("Error reading global count file:", err);
-    } else {
-        const jsonData = JSON.parse(data);
-        globalCount = jsonData.count;
-        console.log("Initial global count:", globalCount);
+client.connect()
+    .then(() => {
+        const database = client.db("toast-cat-db");
+        collection = database.collection("toast-cat");
 
+        // Fetch the initial global count from MongoDB Atlas
+        return collection.findOne();
+    })
+    .then((result) => {
+        if (result) {
+            globalCount = result.count;
+            console.log("Initial global count:", globalCount);
+        } else {
+            // Initialize the global count in the database if it doesn't exist
+            globalCount = 0;
+            collection.insertOne({ count: globalCount });
+        }
+
+        // Emit the initial global count to all connected clients
         io.emit('global-count-updated', globalCount);
-    }
-});
+    })
+    .catch((err) => {
+        console.error("Error connecting to MongoDB Atlas:", err);
+    });
 
 io.on('connection', (socket) => {
     console.log('A client connected');
 
-    io.emit('global-count-updated', globalCount);
+    // Emit the current global count to the client upon connection
+    socket.emit('global-count-updated', globalCount);
 
     socket.on('disconnect', () => {
         console.log('A client disconnected');
     });
 
-    socket.on('update-global-count', (data) => {
-        // Update global count
+    socket.on('update-global-count', () => {
+        // Update global count in the database
         globalCount++;
 
-        // Write the updated count to the JSON file
-        const newData = { count: globalCount };
-        fs.writeFile(path.join(__dirname, 'globalCount.json'), JSON.stringify(newData), 'utf8', (err) => {
-            if (err) {
-                console.error("Error writing global count to file:", err);
-            } else {
+        // Update the global count in MongoDB Atlas
+        collection.updateOne({}, { $set: { count: globalCount } })
+            .then(() => {
                 console.log("Global count updated:", globalCount);
 
                 // Broadcast the updated count to all connected clients
                 io.emit('global-count-updated', globalCount);
-            }
-        });
+            })
+            .catch((err) => {
+                console.error("Error updating global count in MongoDB Atlas:", err);
+            });
     });
 });
 
