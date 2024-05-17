@@ -7,14 +7,14 @@ const { MongoClient } = require('mongodb');
 const app = express();
 
 // Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/dist')));
 
 // Serve static files from the 'assets' directory
-app.use('/assets', express.static(path.join(__dirname, './public/assets')));
+app.use('/assets', express.static(path.join(__dirname, './dist/assets')));
 
 // Route for serving the index.html file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/index.html'));
+    res.sendFile(path.join(__dirname, './dist/index.html'));
 });
 
 const server = http.createServer(app);
