@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const globalClicksNumber = document.getElementById('global-count-header');
 
     let isPlaying = false;
-    const socket = io();
+
+    const SERVER_URL = 'https://toast-cat.netlify.app/';
+    const socket = io(SERVER_URL);
 
     function changeCatImage() {
         catImage.src = "./assets/cat2.png";
