@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function playMeowSound() {
         if (!isPlaying) {
-            meowSound.play();
+            meowSound.play().catch(error => {
+                console.error('Error playing sound:', error);
+            });
             isPlaying = true;
             meowSound.addEventListener('ended', function() {
                 isPlaying = false;
@@ -37,13 +39,15 @@ document.addEventListener("DOMContentLoaded", function() {
         socket.emit('update-global-count', currentNumber);
     }
 
-    function handleMouseDown() {
+    function handleMouseDown(event) {
+        event.preventDefault(); // Prevent default behavior like image drag
         changeCatImage();
         playMeowSound(); 
         incrementLocalCount();
     }
 
-    function handleMouseUp() {
+    function handleMouseUp(event) {
+        event.preventDefault(); // Prevent default behavior like image drag
         restoreCatImage();
     }
 
@@ -52,15 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
     catButton.addEventListener('mouseup', handleMouseUp);
     catButton.addEventListener('mouseleave', handleMouseUp);
     
-    catButton.addEventListener('touchstart', function(event) {
-        handleMouseDown();
-        playMeowSound(); 
-        event.preventDefault(); // Prevent default behavior like image drag
-    });
-    catButton.addEventListener('touchend', function(event) {
-        handleMouseUp();
-        event.preventDefault(); // Prevent default behavior like image drag
-    });
+    catButton.addEventListener('touchstart', handleMouseDown);
+    catButton.addEventListener('touchend', handleMouseUp);
     catButton.addEventListener('touchcancel', handleMouseUp);
     
     socket.on('global-count-updated', (data) => {
