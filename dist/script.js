@@ -1,7 +1,3 @@
-// Add this line in your script.js to check if Socket.IO is defined
-console.log("Socket.IO:", typeof io);
-
-// Rest of your script
 document.addEventListener("DOMContentLoaded", function() {
     const catButton = document.querySelector('.cat-button');
     const catImage = document.getElementById('cat-image');
@@ -41,22 +37,33 @@ document.addEventListener("DOMContentLoaded", function() {
         socket.emit('update-global-count', currentNumber);
     }
 
-    catButton.addEventListener('mousedown', () => {
+    function handleMouseDown() {
         changeCatImage();
         playMeowSound(); 
         incrementLocalCount();
-    });
+    }
 
-    catButton.addEventListener('mouseup', () => {
+    function handleMouseUp() {
         restoreCatImage();
-    });
+    }
 
-    catButton.addEventListener('mouseleave', () => {
-        restoreCatImage();
+    // Add event listeners for both mouse and touch events
+    catButton.addEventListener('mousedown', handleMouseDown);
+    catButton.addEventListener('mouseup', handleMouseUp);
+    catButton.addEventListener('mouseleave', handleMouseUp);
+    
+    catButton.addEventListener('touchstart', function(event) {
+        handleMouseDown();
+        event.preventDefault(); // Prevent default behavior like image drag
     });
+    catButton.addEventListener('touchend', function(event) {
+        handleMouseUp();
+        event.preventDefault(); // Prevent default behavior like image drag
+    });
+    catButton.addEventListener('touchcancel', handleMouseUp);
     
     socket.on('global-count-updated', (data) => {
         globalClicksNumber.textContent = data;
-        console.log('UPDATING RN ',data)
+        console.log('UPDATING RN ', data);
     });
 });
