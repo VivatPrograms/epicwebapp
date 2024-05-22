@@ -15,16 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
     catImage1.src = "./assets/cat1.png";
     catImage2.src = "./assets/cat2.png";
 
-    // Function to ensure audio can be played on mobile
-    function initAudio() {
-        meowSound.play().then(() => {
-            meowSound.pause();
-            meowSound.currentTime = 0;
-        }).catch(error => {
-            console.error('Error initializing sound:', error);
-        });
-    }
-
     function changeCatImage() {
         catImage.src = "./assets/cat2.png";
     }
@@ -74,7 +64,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     catButton.addEventListener('touchstart', function(event) {
         handleMouseDown(event);
-        initAudio(); // Ensure audio is initialized on the first touch
     });
     catButton.addEventListener('touchend', handleMouseUp);
     catButton.addEventListener('touchcancel', handleMouseUp);
@@ -83,8 +72,4 @@ document.addEventListener("DOMContentLoaded", function() {
         globalClicksNumber.textContent = data;
         console.log('UPDATING RN ', data);
     });
-
-    // Initialize audio on the first user interaction to comply with mobile browser policies
-    document.body.addEventListener('touchstart', initAudio, { once: true });
-    document.body.addEventListener('click', initAudio, { once: true });
 });

@@ -68,12 +68,16 @@ button:hover {
     margin-left: 50vw;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: hidden; /* Ensure content doesn't overflow */
 }
 
 .dont-text h1 {
     font-size: 5vh;
     color: rgba(0, 0, 0, 0.468);
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    max-width: 100%; /* Ensure text fits within parent */
 }
 
 .local-count {
