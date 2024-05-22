@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     catButton.addEventListener('touchstart', function(event) {
         handleMouseDown();
+        playMeowSound(); 
         event.preventDefault(); // Prevent default behavior like image drag
     });
     catButton.addEventListener('touchend', function(event) {
